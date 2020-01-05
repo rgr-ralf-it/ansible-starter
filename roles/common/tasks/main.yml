@@ -1,0 +1,16 @@
+---
+- name: "Execute 'common' subrole depending on OS FAMILY"
+  block:
+    - import_tasks: redhat.yml
+      when: ansible_facts['os_family']|lower == 'redhat'
+    - import_tasks: debian.yml
+      when: ansible_facts['os_family']|lower == 'debian'
+
+
+- name: "Collect facts about system services"
+  service_facts:
+
+- debug:
+    var: ansible_facts.services|length
+
+    

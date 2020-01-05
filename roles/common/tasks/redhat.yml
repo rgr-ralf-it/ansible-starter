@@ -1,0 +1,12 @@
+
+---
+- name: "[redhat] Yum install 'fakeyum' application"
+  block:
+    - yum:
+        name: fakeyum
+        state: present
+  rescue:
+    - debug:
+        msg: 'I caught an error, can do stuff here to fix it, :-)'
+
+    
