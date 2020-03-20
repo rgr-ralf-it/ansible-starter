@@ -1,6 +1,7 @@
 
 ---
 - name: "[debian] Apt install 'fakeapt' application"
+  become: yes
   block:
     - apt:
         name: fakeapt

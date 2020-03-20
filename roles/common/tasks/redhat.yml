@@ -1,6 +1,7 @@
 
 ---
 - name: "[redhat] Yum install 'fakeyum' application"
+  become: yes
   block:
     - yum:
         name: fakeyum

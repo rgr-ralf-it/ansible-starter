@@ -1,20 +1,16 @@
 ---
-- hosts: workstation
-  post_tasks:
-    - name: "[Bash] 'Hello World' script from files/hello_world.sh that simply echo 'Hello World (input: <all input>)' as output"
-      script: hello_world.sh "Your Name" "Age 21" "Dog named Alice" etc..
-      register: result
-    - debug: var=result
 
+- hosts: all 
+  pre_tasks:
+    - name: "Authorize key '~/.ssh/id_rsa' of current user {{ lookup('env','USER') }} on ALL"
+      authorized_key: 
+        user: "{{ lookup('env','USER') }}"
+        key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+        state: present
   roles:
     - { role: common }
 
-  tasks:
-    - name: "[Python] 'Hello World' module from library/hello_world.py that simply returns 'Hello World' as output"
-      hello_world:
-      register: result
-    - debug: var=result
-
+- hosts: master
   pre_tasks:
     - name: "[Python] 'Pass Variables' module from library/pass_variables.py that gets input, changes it and outputs new values"
       pass_variables:
@@ -23,13 +19,32 @@
         description: "This input will be not modified"
       register: result
     - debug: var=result
-
-- hosts: staging_group
+  tasks:
+    - name: "[Python] 'Hello World' module from library/hello_world.py that simply returns 'Hello World' as output"
+      hello_world:
+      register: result
+    - debug: var=result
+  post_tasks:
+    - name: "[Bash] 'Hello World' script from files/hello_world.sh that simply echo 'Hello World (input: <all input>)' as output"
+      script: hello_world.sh "Your Name" "Age 21" "Dog named Alice" etc..
+      register: result
+    - debug: var=result
+    - name: Echo from sudo 
+      shell: echo $(id)
+      become: true
+      register: result
+    - debug: var=result     
   roles:
-   - { role: common }
+    - { role: master }
 
-- hosts: production_group
+
+- hosts: slaves
+  tasks:
+    - name: Echo from sudo 
+      shell: echo $(id)
+      become: true
+      register: result
+    - debug: var=result 
   roles:
-   - { role: common }
-
+   - { role: slaves }
     
