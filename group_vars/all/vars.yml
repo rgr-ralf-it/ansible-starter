@@ -1,0 +1,3 @@
+ansible_ssh_user: "root" #{{ lookup('env','USER') }}"
+ansible_user: "root" #{{ lookup('env','USER') }}"
+path_data_macs_slaves: "../data/macs/slaves"

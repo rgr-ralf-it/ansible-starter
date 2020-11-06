@@ -1,0 +1,6 @@
+---
+- name: Wake on Lan all SLAVES
+  include_tasks: wol.yml
+  loop_control:
+    loop_var: slaveMacs
+  loop: "{{ lookup('file', path_data_macs_slaves ).strip().splitlines() }}"

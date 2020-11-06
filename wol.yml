@@ -1,0 +1,10 @@
+---
+- hosts: master
+  vars:
+    broadcast: "{{ lookup('env','BROADCAST') }}"
+  pre_tasks:       
+    - debug:
+        msg: Check if broadcast is defined
+      failed_when: broadcast is not defined
+  roles:
+    - role: wol

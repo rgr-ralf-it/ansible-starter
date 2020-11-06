@@ -1,0 +1,15 @@
+---
+- block:
+    - debug:
+        msg: |2
+          Check if broadcast is defined
+          Check if slaveMacs is defined
+      failed_when:
+        - broadcast is not defined
+        - slaveMacs is not defined
+
+    - name: 'Wake on Lan next SLAVE'
+      wakeonlan:
+        mac: '{{ item }}'
+        broadcast: "{{ broadcast }}"
+      with_items: '{{ slaveMacs.split() }}'

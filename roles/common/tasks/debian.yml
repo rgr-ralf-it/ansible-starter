@@ -1,0 +1,13 @@
+
+---
+- name: "[debian] Apt install 'fakeapt' application"
+  become: yes
+  block:
+    - apt:
+        name: fakeapt
+        state: present
+  rescue:
+    - debug:
+        msg: 'I caught an error, can do stuff here to fix it, :-)'
+
+    

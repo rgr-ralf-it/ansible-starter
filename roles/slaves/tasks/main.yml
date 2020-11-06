@@ -1,0 +1,7 @@
+
+---
+- name: Check content of ~/
+  shell: ls -la ~/
+  register: result
+
+- debug: var=result
