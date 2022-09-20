@@ -6,6 +6,9 @@ import time
 import subprocess
 from pathlib import Path
 
+def verify_file(self, *args, **kwargs):
+	return True
+
 def main(serversMacs: list, dirName: str):
     user = find_current_user()
     ipDict = {}

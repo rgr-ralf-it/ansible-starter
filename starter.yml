@@ -7,6 +7,11 @@
         user: "{{ lookup('env','USER') }}"
         key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
         state: present
+    - debug:
+        msg: >
+           "DEF INTF: {{ ansible_default_ipv4.interface }}"
+           "DEF ADDR: {{ ansible_default_ipv4.address }}"
+
   roles:
     - { role: common }
 

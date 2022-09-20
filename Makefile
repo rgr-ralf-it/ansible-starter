@@ -3,9 +3,10 @@ export ANSIBLE_VAULT_PASSWORD_FILE = ${HOME}/.ansible/vaults/${PROJECT_NAME}
 
 .PHONY: ${TARGETS}
 
-MASTER=ANSIBLE_NOCOWS=1 ansible-playbook main.yml -i inventories/master 
-SLAVES=ANSIBLE_NOCOWS=1 ansible-playbook main.yml -i inventories/slaves 
-CLUSTER=ANSIBLE_NOCOWS=1 ansible-playbook main.yml -i inventories
+PLAY=ANSIBLE_NOCOWS=1 ansible-playbook starter.yml
+MASTER=$(PLAY) -i inventories/master 
+SLAVES=$(PLAY) -i inventories/slaves 
+CLUSTER=$(PLAY) -i inventories
 
 setup:
 	echo ${PROJECT_NAME}
@@ -23,7 +24,12 @@ cluster:
 	$(CLUSTER)
 clusterv: 
 	$(CLUSTER) -v
+clustervvvv: 
+	$(CLUSTER) -vvvv
 check: 
 	$(PLAY) --syntax-check
 
-all: setup check play
+all: setup check  cluster 
+allv: setup check clusterv
+allvvvv: setup check clustervvvv
+alld: setup check clusterd
